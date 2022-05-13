@@ -1,0 +1,24 @@
+@use '../../styles/constants/colors';
+
+.container {
+  width: 100%;
+  height: 50px;
+  font-size: 12px;
+  // border:1px solid black;
+  background-color: colors.$WHITE;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.poster {
+  height: 50px;
+  width: 50px;
+}
+
+.textData {
+  padding-left: 10px;
+  line-height: 15px;
+}

@@ -11,8 +11,6 @@ const Input = () => {
   const [, setQuery] = useRecoilState(queryData)
   const [value, setValue] = useState<string>('')
 
-  // const res = useRecoilValueLoadable(requestData)
-
   const inputRef = useRef(null)
   const debounceCall = useRef(_.debounce((q) => setQuery(q), 500)).current
 

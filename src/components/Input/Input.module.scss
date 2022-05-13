@@ -6,6 +6,7 @@
   height: 50px;
   background-color: colors.$WHITE;
   border-radius: 10px;
+  margin-bottom: 30px;
   @include flexbox.flexbox(center, center)
 }
 

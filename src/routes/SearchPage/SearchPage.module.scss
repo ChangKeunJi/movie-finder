@@ -1,0 +1,12 @@
+@use '../../styles/mixins/flexbox';
+
+.main {
+  height: 80%;
+  overflow: scroll;
+  margin-bottom: 30px;
+}
+
+.message {
+  height: 100%;
+  @include flexbox.flexbox(center,center);
+}
