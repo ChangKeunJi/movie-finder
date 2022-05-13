@@ -1,0 +1,21 @@
+@use '../../styles/mixins/animation';
+@use '../../styles/constants/colors';
+@use '../../styles/mixins/flexbox';
+
+.container {
+  height: 100%;
+  background-color: colors.$WHITE;
+  border-radius: 0 0 25px 25px;
+  @include flexbox.flexbox(around, center);
+}
+
+.icon {
+    color: colors.$TEXT;
+    border-bottom: 1px solid transparent;
+    @include animation.borderBottom(colors.$PRIMARY);
+}
+
+.isActive {
+  color: colors.$PRIMARY;
+}
+

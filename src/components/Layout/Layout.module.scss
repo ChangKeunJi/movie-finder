@@ -1,0 +1,22 @@
+@use '../../styles/constants/colors';
+
+.container {
+  width: 360px;
+  height: 540px;
+  background-color: colors.$BACKGROUND;
+  border-radius: 25px;
+  box-shadow:  0 0 10px colors.$GRAYD;
+}
+
+.content {
+  height: 85%;
+  padding:30px 40px;
+}
+
+.tab {
+  border-top: 1px solid transparent;
+  height: 15%;
+  width: 100%;
+  box-shadow: 0 0px 3px 1px colors.$GRAYD;
+  border-radius: 0 0 25px 25px;
+}
