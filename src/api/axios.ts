@@ -1,5 +1,29 @@
-// https://github.com/axios/axios
+import axios, { AxiosError, AxiosResponse } from 'axios'
 
+// '={검색어}&page={페이지번호(1~100)}'
+const instance = axios.create({
+  baseURL: process.env.REACT_APP_URL,
+})
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const requestError = (error: any): any => {
+  return Promise.reject(error)
+}
+
+const resolveResponse = (response: AxiosResponse): AxiosResponse => response
+
+const responseError = (error: AxiosError): Promise<never> => {
+  // eslint-disable-next-line no-console
+  console.log(error)
+  return Promise.reject(error)
+}
+
+instance.interceptors.request.use((config) => config, requestError)
+instance.interceptors.response.use(resolveResponse, responseError)
+
+export { instance }
+
+/*
 import axios, { AxiosError, AxiosResponse } from 'axios'
 
 const { CancelToken } = axios
@@ -36,3 +60,5 @@ const isAxiosError = <E>(err: unknown | AxiosError<E>): err is AxiosError => {
 }
 
 export { axios, instance, plainInstance, CancelToken, isCancel, isAxiosError }
+
+*/

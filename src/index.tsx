@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import Routes from './routes'
-
 import reportWebVitals from './reportWebVitals'
 import './styles/index.scss'
 

@@ -1,24 +1,29 @@
-import {
-  atom,
-  selector,
-  useRecoilState,
-  useSetRecoilState,
-  useResetRecoilState,
-  useRecoilValue,
-  useRecoilCallback,
-  RecoilState,
-  GetRecoilValue,
-  SetRecoilState,
-  SetterOrUpdater,
-  Resetter,
-} from 'recoil'
+import { queryData } from './queryData'
+import { requestData } from './requestData'
 
-export { atom, selector, useRecoilState, useSetRecoilState, useRecoilValue, useResetRecoilState, useRecoilCallback }
+export { queryData, requestData }
 
-export type { SetterOrUpdater, Resetter, GetRecoilValue, SetRecoilState }
+// import {
+//   atom,
+//   selector,
+//   useRecoilState,
+//   useSetRecoilState,
+//   useResetRecoilState,
+//   useRecoilValue,
+//   useRecoilCallback,
+//   RecoilState,
+//   GetRecoilValue,
+//   SetRecoilState,
+//   SetterOrUpdater,
+//   Resetter,
+// } from 'recoil'
 
-export function useRecoil<T>(recoilState: RecoilState<T>): [T, SetterOrUpdater<T>, Resetter] {
-  const [value, setter] = useRecoilState(recoilState)
-  const resetter = useResetRecoilState(recoilState)
-  return [value, setter, resetter]
-}
+// export { atom, selector, useRecoilState, useSetRecoilState, useRecoilValue, useResetRecoilState, useRecoilCallback }
+
+// export type { SetterOrUpdater, Resetter, GetRecoilValue, SetRecoilState }
+
+// export function useRecoil<T>(recoilState: RecoilState<T>): [T, SetterOrUpdater<T>, Resetter] {
+//   const [value, setter] = useRecoilState(recoilState)
+//   const resetter = useResetRecoilState(recoilState)
+//   return [value, setter, resetter]
+// }
