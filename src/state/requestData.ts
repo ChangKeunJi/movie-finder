@@ -17,8 +17,7 @@ export interface IResponseData {
   Response: Boolean
 }
 
-// TODO: Type 변경
-export const requestData = selector<any>({
+export const requestData = selector<IResponseData>({
   key: 'requestData',
   get: async ({ get }) => {
     const query = get(queryData)

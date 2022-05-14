@@ -25,7 +25,6 @@ const SearchPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const res = useRecoilValueLoadable(requestData)
   const favoriteList = useRecoilValue(favoriteData)
-  console.log(favoriteList)
 
   // 즐겨찾기 목록을 받아온 뒤 List에 favorite 속성을 추가
   useEffect(() => {
@@ -36,7 +35,7 @@ const SearchPage = () => {
     const copied = res.contents.Search.slice()
     const copiedFav = favoriteList.slice()
     const newList = copied.map((movie: IMovieData) => {
-      const bool = copiedFav.includes(movie.imdbID)
+      const bool = copiedFav.find((fav) => fav.imdbID === movie.imdbID)
       return {
         ...movie,
         favorite: bool,
@@ -48,6 +47,7 @@ const SearchPage = () => {
   // 클릭하면 해당 Item을 Favorite에 추가
   const handleClickList = useCallback(
     (item: IMovieData): void => {
+      // 클릭된 Item 상태에 업데이트
       setClicked(item)
       // 모달 open
       setIsModalOpen(!isModalOpen)
@@ -58,15 +58,11 @@ const SearchPage = () => {
   return (
     <Layout>
       <Input />
-      <main className={styles.main}>
-        {_.isArray(list) && list.map((item: any) => <List onClick={handleClickList} key={item.imdbID} data={item} />)}
-        {!_.isArray(list) && (
-          <div className={styles.message}>
-            <p>검색결과가 없습니다 ‼️</p>
-          </div>
-        )}
+      <ul className={styles.ul}>
+        {list.length > 0 && list.map((item: any) => <List onClick={handleClickList} key={item.imdbID} data={item} />)}
+        {list.length === 0 && <p className={styles.message}>검색결과가 없습니다 ‼️</p>}
         {isModalOpen && <Modal data={clicked} setIsModalOpen={setIsModalOpen} />}
-      </main>
+      </ul>
     </Layout>
   )
 }

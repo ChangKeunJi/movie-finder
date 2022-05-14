@@ -2,7 +2,7 @@ import cx from 'classnames'
 
 import styles from './List.module.scss'
 import { IMovieData } from '../../types/index.d'
-import { Star } from '../../assets/icon/index'
+import { StarFilled, Star } from '../../assets/icon/index'
 
 interface Props {
   data: IMovieData
@@ -20,7 +20,8 @@ const List = ({ data, onClick }: Props) => {
           <p className={styles.type}>{data.Type}</p>
         </span>
         <span className={styles.favorite}>
-          <Star className={cx(styles.icon, { [styles.isActive]: data.favorite })} />
+          {data.favorite && <StarFilled className={cx(styles.icon, { [styles.isActive]: data.favorite })} />}
+          {!data.favorite && <Star className={styles.icon} />}
         </span>
       </section>
     </div>

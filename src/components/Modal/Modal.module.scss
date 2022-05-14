@@ -8,7 +8,7 @@
   position:fixed;
   top:0;
   left: 0;
-  z-index: 99;
+  z-index: 49;
   background-color: rgba($color: colors.$GRAY6, $alpha: .4);
   @include flexbox.flexbox(center, center);
 }
@@ -19,6 +19,7 @@
   background-color: colors.$WHITE;
   border: 1px solid transparent;
   border-radius: 15px;
+  z-index: 99;
   box-shadow:  0 0 10px colors.$GRAYD;
   @include flexbox.flexbox(center, center);
 }
@@ -52,4 +53,8 @@
 .cancel {
   background-color: colors.$RED;
   color: colors.$WHITE;
+}
+
+.buttonText {
+  color:colors.$PRIMARY;
 }

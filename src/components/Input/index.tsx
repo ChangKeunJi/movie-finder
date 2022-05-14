@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import { useRecoilState, useRecoilValueLoadable } from 'recoil'
+import { useRecoilState } from 'recoil'
 
-import { queryData, requestData } from 'state'
+import { queryData } from 'state'
 import { SearchInput } from 'assets/icon'
 import { Suspense, ChangeEvent, useCallback, useRef, useState } from 'react'
 

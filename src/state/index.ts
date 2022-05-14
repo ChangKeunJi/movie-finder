@@ -1,9 +1,8 @@
 import { queryData } from './queryData'
-import { requestData } from './requestData'
-import { requestFavorite } from './requestFavorite'
 import { favoriteData } from './favoriteData'
+import { requestData } from './requestData'
 
-export { queryData, requestFavorite, requestData, favoriteData }
+export { queryData, requestData, favoriteData }
 
 // import {
 //   atom,
