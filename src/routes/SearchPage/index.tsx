@@ -1,23 +1,16 @@
 import { useEffect, useState, useCallback } from 'react'
-import styles from './SearchPage.module.scss'
-import { useRecoilValue, useRecoilValueLoadable } from 'recoil'
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil'
 import _ from 'lodash'
 
+import styles from './SearchPage.module.scss'
 import { IMovieData } from 'types'
-import { requestData, favoriteData } from 'state'
+import { requestData, favoriteData, queryData } from 'state'
+import { initial } from '../../constant/index'
+
 import Layout from 'components/Layout'
 import Input from 'components/Input'
 import List from 'components/List'
 import Modal from 'components/Modal'
-
-const initial = {
-  Title: '',
-  Year: '',
-  imdbID: '',
-  Type: '',
-  Poster: '',
-  favorite: false,
-}
 
 const SearchPage = () => {
   const [list, setList] = useState<IMovieData[]>([])
@@ -25,15 +18,23 @@ const SearchPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const res = useRecoilValueLoadable(requestData)
   const favoriteList = useRecoilValue(favoriteData)
+  const [, setQuery] = useRecoilState(queryData)
 
-  // 즐겨찾기 목록을 받아온 뒤 List에 favorite 속성을 추가
+  // 즐겨찾기 페이지에서 다시 돌아올 때 목록 초기화
+  useEffect(() => {
+    setQuery('')
+  }, [setQuery])
+
+  // 즐겨찾기 목록과 api response를 받아온 뒤 List에 favorite 속성을 추가
   useEffect(() => {
     if (!_.isArray(res.contents.Search)) {
       setList([])
       return
     }
-    const copied = res.contents.Search.slice()
-    const copiedFav = favoriteList.slice()
+    const copied = res.contents.Search.slice() // api response
+    const copiedFav = favoriteList.slice() // 즐겨찾기 목록
+
+    // response 중 즐겨찾기 목록과 동일한 Movie가 있다면 'favorite:true' 속성 추가
     const newList = copied.map((movie: IMovieData) => {
       const bool = copiedFav.find((fav) => fav.imdbID === movie.imdbID)
       return {
@@ -44,7 +45,7 @@ const SearchPage = () => {
     setList(newList)
   }, [res, favoriteList])
 
-  // 클릭하면 해당 Item을 Favorite에 추가
+  // 클릭하면 해당 Item을 Modal 컴포넌트에 전달해주고 Modal을 렌더링
   const handleClickList = useCallback(
     (item: IMovieData): void => {
       // 클릭된 Item 상태에 업데이트

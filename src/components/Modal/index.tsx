@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 
 import useOutsideClick from '../../hooks/useOutsideClick'
 import { local } from 'api/local'
@@ -13,16 +13,11 @@ interface Props {
 }
 
 const Modal = ({ data, setIsModalOpen }: Props) => {
-  // const [isFavorite, setIsFavorite] = useState(false)
   const [favorite, setFavorite] = useRecoilState(favoriteData)
   const modalRef = useRef<HTMLElement>(null)
 
   // 바깥 클릭하면 닫아준다
   useOutsideClick(modalRef, () => setIsModalOpen((prev: boolean) => !prev))
-
-  // useEffect(() => {
-  //   if (data.favorite) setIsFavorite(true)
-  // }, [data.favorite])
 
   const renderText = () => {
     if (data.favorite) {
@@ -39,20 +34,21 @@ const Modal = ({ data, setIsModalOpen }: Props) => {
     )
   }
 
-  // 모달 닫아준다
+  // 취소 버튼 누르면 모달 닫아준다
   const handleClickCancel = () => {
     setIsModalOpen((prev: boolean) => !prev)
   }
 
-  // 즐겨찾기 상태에 추가하거나 제거해준다
+  // 즐겨찾기 상태에 추가 또는 제거해준다
   const handleClickCheck = () => {
-    // 즐겨찾기가 아닐 때
+    // 즐겨찾기가 아닐 때 - 추가
     if (!data.favorite) {
       const newData = { ...data, favorite: true }
       setFavorite([...favorite, newData])
       // 로컬 스토리지에 추가
       local.setLocalStorage([...favorite, newData])
     } else {
+      // 즐겨찾기일 때 - 삭제
       const prev = [...favorite].filter((fav) => fav.imdbID !== data.imdbID)
       setFavorite(prev)
       // 로컬 스토리지에서 삭제한 뒤 업데이트

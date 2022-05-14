@@ -12,10 +12,10 @@
 .icon {
     color: colors.$TEXT;
     border-bottom: 1px solid transparent;
-    @include animation.borderBottom(colors.$PRIMARY);
 }
 
 .isActive {
   color: colors.$PRIMARY;
+  border-bottom: 1px solid colors.$PRIMARY;
 }
 

@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 
 import { queryData } from 'state'
 import { SearchInput } from 'assets/icon'
@@ -8,7 +8,7 @@ import { Suspense, ChangeEvent, useCallback, useRef, useState } from 'react'
 import styles from './Input.module.scss'
 
 const Input = () => {
-  const [, setQuery] = useRecoilState(queryData)
+  const setQuery = useSetRecoilState(queryData)
   const [value, setValue] = useState<string>('')
 
   const inputRef = useRef(null)
@@ -41,3 +41,7 @@ const Input = () => {
 }
 
 export default Input
+
+/* debounce 참조
+https://velog.io/@edie_ko/React-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%84%B1%EB%8A%A5-%ED%96%A5%EC%83%81-%EC%8B%9C%ED%82%A4%EA%B8%B0-feat.-Lodash-throttle-debounce
+*/

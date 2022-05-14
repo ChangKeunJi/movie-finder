@@ -10,21 +10,6 @@
   }
 }
 
-@mixin borderBottom($color) {
-  &::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 1px;
-    background: $color;
-    transition: width .3s;
-  }
-
-  &.isActive::after {
-    width: 100%;
-  }
-}
-
 @keyframes rotation {
   from {
     transform: rotate(0deg);
