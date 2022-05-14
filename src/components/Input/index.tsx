@@ -1,14 +1,20 @@
 import _ from 'lodash'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil'
 
-import { queryData } from 'state'
+import { pageData, queryData } from 'state'
 import { SearchInput } from 'assets/icon'
 import { Suspense, ChangeEvent, useCallback, useRef, useState } from 'react'
 
 import styles from './Input.module.scss'
 
-const Input = () => {
+interface Props {
+  setList: Function
+}
+
+const Input = ({ setList }: Props) => {
   const setQuery = useSetRecoilState(queryData)
+  const resetQuery = useResetRecoilState(queryData)
+  const [, setPage] = useRecoilState(pageData)
   const [value, setValue] = useState<string>('')
 
   const inputRef = useRef(null)
@@ -16,10 +22,13 @@ const Input = () => {
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>): void => {
+      resetQuery()
+      setList([])
       setValue(e.currentTarget.value)
       debounceCall(e.currentTarget.value)
+      setPage(1)
     },
-    [debounceCall]
+    [debounceCall, setPage, setList, resetQuery]
   )
 
   return (

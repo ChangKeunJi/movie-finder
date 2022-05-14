@@ -1,4 +1,4 @@
-import { queryData } from 'state'
+import { queryData, pageData } from 'state'
 import { selector } from 'recoil'
 
 import { instance } from 'api/axios'
@@ -17,13 +17,16 @@ export interface IResponseData {
   Response: Boolean
 }
 
-export const requestData = selector<IResponseData>({
-  key: 'requestData',
+// '={검색어}&page={페이지번호(1~100)}'
+export const requestApi = selector<IResponseData>({
+  key: 'requestApi',
   get: async ({ get }) => {
     const query = get(queryData)
+    const page = get(pageData)
     try {
       if (query.length > 0) {
-        const res = await instance.get(`${query}`)
+        const res = await instance.get(`${query}&page=${page}`)
+
         return res.data
       }
     } catch (error: unknown) {

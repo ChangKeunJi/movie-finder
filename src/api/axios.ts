@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 
-// '={검색어}&page={페이지번호(1~100)}'
 const instance = axios.create({
   baseURL: process.env.REACT_APP_URL,
 })
