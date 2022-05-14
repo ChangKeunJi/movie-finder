@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/ChangKeunJi/movie-finder/static/css/main.c37f9ed5.css",
+    "main.js": "/ChangKeunJi/movie-finder/static/js/main.2ab25ca4.js",
+    "static/js/787.68ea1acb.chunk.js": "/ChangKeunJi/movie-finder/static/js/787.68ea1acb.chunk.js",
+    "static/media/star.svg": "/ChangKeunJi/movie-finder/static/media/star.8eefd6f348174e14fb0567340bb35101.svg",
+    "static/media/search_input.svg": "/ChangKeunJi/movie-finder/static/media/search_input.77479783feecb1994c5de129e69d9770.svg",
+    "index.html": "/ChangKeunJi/movie-finder/index.html",
+    "static/media/star_sm.svg": "/ChangKeunJi/movie-finder/static/media/star_sm.25016e883415b1704b97c68dd4d84100.svg",
+    "static/media/search.svg": "/ChangKeunJi/movie-finder/static/media/search.4486c2e14e52da678cc4b9233e36ac4f.svg",
+    "main.c37f9ed5.css.map": "/ChangKeunJi/movie-finder/static/css/main.c37f9ed5.css.map",
+    "main.2ab25ca4.js.map": "/ChangKeunJi/movie-finder/static/js/main.2ab25ca4.js.map",
+    "787.68ea1acb.chunk.js.map": "/ChangKeunJi/movie-finder/static/js/787.68ea1acb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c37f9ed5.css",
+    "static/js/main.2ab25ca4.js"
+  ]
+}
