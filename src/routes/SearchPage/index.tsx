@@ -14,7 +14,7 @@ import List from 'components/List'
 import Modal from 'components/Modal'
 
 const SearchPage = () => {
-  const [list, setList] = useState<IMovieData[]>([])
+  const [list, setList] = useState<any>([])
   const [clicked, setClicked] = useState<IMovieData>(initial)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -40,8 +40,7 @@ const SearchPage = () => {
         favorite: bool,
       }
     })
-
-    setList((prev) => [...prev, ...newList])
+    setList(newList)
   }, [res, favoriteList, page])
 
   // 클릭하면 해당 Item을 Modal 컴포넌트에 전달해주고 Modal을 렌더링
@@ -54,36 +53,6 @@ const SearchPage = () => {
     },
     [isModalOpen]
   )
-
-  const getMoreItem = useCallback(async () => {
-    setIsLoaded(true)
-    // eslint-disable-next-line no-promise-executor-return
-    await new Promise((resolve) => setTimeout(resolve, 400))
-    setPage(page + 1)
-    setIsLoaded(false)
-  }, [page, setPage])
-
-  const onIntersect = useCallback(
-    async ([entry]: any, observer: any) => {
-      if (entry.isIntersecting && !isLoaded) {
-        observer.unobserve(entry.target)
-        await getMoreItem()
-        observer.observe(entry.target)
-      }
-    },
-    [isLoaded, getMoreItem]
-  )
-
-  useEffect(() => {
-    let observer: any
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4,
-      })
-      observer.observe(target)
-    }
-    return () => observer && observer.disconnect()
-  }, [target, onIntersect])
 
   return (
     <Layout>
