@@ -1,16 +1,22 @@
 @use '../../styles/constants/colors';
+@use '../../styles/mixins/flexbox';
+@use '../../styles/mixins/animation';
 
 .container {
   width: 100%;
   height: 50px;
   font-size: 12px;
-  // border:1px solid black;
   background-color: colors.$WHITE;
   display: flex;
   align-items: center;
   border-radius: 10px;
   margin-bottom: 10px;
   overflow: hidden;
+  cursor: pointer;
+  &:hover {
+    background-color:colors.$GRAYE;
+  }
+  @include animation.clickEffect();
 }
 
 .poster {
@@ -18,7 +24,16 @@
   width: 50px;
 }
 
-.textData {
-  padding-left: 10px;
+.info {
+  width: 100%;
+  @include flexbox.flexbox(between, center);
+  padding: 0 10px;
   line-height: 15px;
+}
+
+.icon {
+  width: 25px;
+}
+.isActive {
+  color:colors.$FAVORITE;
 }

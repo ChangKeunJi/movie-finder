@@ -1,34 +1,29 @@
-import styles from './List.module.scss'
+import cx from 'classnames'
 
-interface IData {
-  data: {
-    Title: string
-    Year: string
-    imdbID: string
-    Type: string
-    Poster: string
-  }
+import styles from './List.module.scss'
+import { IMovieData } from '../../types/index.d'
+import { Star } from '../../assets/icon/index'
+
+interface Props {
+  data: IMovieData
+  onClick: Function
 }
 
-// const data = {
-//   Title: 'Iron Man: Armored Adventures',
-//   Year: '2008-2012',
-//   imdbID: 'tt0837143',
-//   Type: 'series',
-//   Poster:
-//     'https://m.media-amazon.com/images/M/MV5BZWNjZTJjZmYtYjhjZS00ZjgwLWFjY2UtMzBlMDkzZmM3M2FiXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SX300.jpg',
-// }
-
-const List = ({ data }: IData) => {
+const List = ({ data, onClick }: Props) => {
   return (
-    <article className={styles.container}>
+    <div aria-hidden='true' onClick={() => onClick(data)} className={styles.container}>
       <img className={styles.poster} src={data.Poster} alt='poster' />
-      <section className={styles.textData}>
-        <p className={styles.title}>{data.Title}</p>
-        <p className={styles.year}>{data.Year}</p>
-        <p className={styles.type}>{data.Type}</p>
+      <section className={styles.info}>
+        <span className={styles.dataWrapper}>
+          <p className={styles.title}>{data.Title}</p>
+          <p className={styles.year}>{data.Year}</p>
+          <p className={styles.type}>{data.Type}</p>
+        </span>
+        <span className={styles.favorite}>
+          <Star className={cx(styles.icon, { [styles.isActive]: data.favorite })} />
+        </span>
       </section>
-    </article>
+    </div>
   )
 }
 

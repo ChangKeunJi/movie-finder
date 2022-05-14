@@ -1,0 +1,55 @@
+@use '../../styles/mixins/flexbox';
+@use '../../styles/constants/colors';
+@use '../../styles/mixins/animation';
+
+.container {
+  width: 100%;
+  height: 100%;
+  position:fixed;
+  top:0;
+  left: 0;
+  z-index: 99;
+  background-color: rgba($color: colors.$GRAY6, $alpha: .4);
+  @include flexbox.flexbox(center, center);
+}
+
+.modal {
+  width: 350px;
+  height: 200px;
+  background-color: colors.$WHITE;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  box-shadow:  0 0 10px colors.$GRAYD;
+  @include flexbox.flexbox(center, center);
+}
+
+.content {
+  width: 80%;
+  height: 80%;
+  text-align: center;
+  padding: 20px 0;
+  @include flexbox.flexbox(around, center);
+  flex-direction: column;
+}
+
+.text {
+  font-size: 18px;
+}
+
+.buttonWrapper {
+  width: 80%;
+  @include flexbox.flexbox(around, center);
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: colors.$PRIMARY-LIGHT;
+  color: colors.$PRIMARY;
+  border-radius: 5px;
+  @include animation.clickEffect();
+}
+
+.cancel {
+  background-color: colors.$RED;
+  color: colors.$WHITE;
+}

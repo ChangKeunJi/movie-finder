@@ -3,6 +3,13 @@
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+@mixin clickEffect() {
+  &:active {
+    position: relative; 
+    top:2px;
+  }
+}
+
 @mixin borderBottom($color) {
   &::after {
     content: '';
