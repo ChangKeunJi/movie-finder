@@ -27,9 +27,17 @@ const FavoritePage = () => {
       <p className={styles.title}>즐겨찾기 목록</p>
       <section className={styles.container}>
         {recoilFavorite.length > 0 &&
-          recoilFavorite.map((item: any) => <List onClick={handleClickList} key={item.imdbID} data={item} />)}
+          recoilFavorite.map((item: any) => (
+            <List isFavorite={false} handleClickList={handleClickList} key={item.imdbID} data={item} />
+          ))}
         {recoilFavorite.length === 0 && <p className={styles.message}>즐겨찾기가 없습니다 ‼️</p>}
-        {isModalOpen && <Modal data={clicked} setIsModalOpen={setIsModalOpen} />}
+        <Modal
+          isFavorite={false}
+          handleClickCheck={() => 3}
+          data={clicked}
+          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isModalOpen}
+        />
       </section>
     </>
   )

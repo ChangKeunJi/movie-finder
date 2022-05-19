@@ -1,11 +1,12 @@
-import { useEffect, useState, useCallback, useMemo, ChangeEvent } from 'react'
-import { useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil'
+import { useEffect, useState, useCallback, useMemo, ChangeEvent, ReactElement, SetStateAction } from 'react'
+import { useRecoilState, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil'
 import _ from 'lodash'
 
 import styles from './SearchPage.module.scss'
 import { IMovieData } from 'types'
 import { requestApi, favoriteData, queryData } from 'state'
 import { initial } from '../../constant/index'
+import { local } from 'api/local'
 
 import Input from 'components/Input'
 import List from 'components/List'
@@ -16,25 +17,17 @@ const SearchPage = () => {
   const [clicked, setClicked] = useState<IMovieData>(initial)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [inputValue, setInputValue] = useState('')
+  const [isFavorite, setIsFavorite] = useState(false)
 
   const res = useRecoilValueLoadable(requestApi)
   const favoriteList = useRecoilValue(favoriteData)
   const setQuery = useSetRecoilState(queryData)
+  const [favorite, setFavorite] = useRecoilState(favoriteData)
 
   useEffect(() => {
     if (res.contents.Response !== 'True') return
-    const copied = res.contents.Search.slice()
-    const copiedFav = favoriteList.slice()
-
-    const newList = copied.map((movie: IMovieData) => {
-      const bool = copiedFav.find((fav) => fav.imdbID === movie.imdbID)
-      return {
-        ...movie,
-        favorite: bool,
-      }
-    })
-    setList(newList)
-  }, [res, favoriteList])
+    setList(res.contents.Search)
+  }, [res])
 
   const debounceCall = useMemo(() => _.debounce((q) => setQuery(q), 500), [setQuery])
 
@@ -51,20 +44,51 @@ const SearchPage = () => {
   )
 
   const handleClickList = useCallback(
-    (item: IMovieData): void => {
+    (item: IMovieData, _isFavorite: SetStateAction<boolean>): void => {
       setClicked(item)
+      setIsFavorite(_isFavorite)
       setIsModalOpen(!isModalOpen)
     },
     [isModalOpen]
+  )
+
+  const renderList = useCallback((): JSX.Element | ReactElement[] => {
+    if (list.length === 0) return <p className={styles.message}>검색결과가 없습니다 ‼️</p>
+    return list.map((item: any) => {
+      const isFavoriteBool = favoriteList.filter((el) => el.imdbID === item.imdbID).length
+      return <List isFavorite={!!isFavoriteBool} handleClickList={handleClickList} key={item.imdbID} data={item} />
+    })
+  }, [list, handleClickList, favoriteList])
+
+  const handleClickCheck = useCallback(
+    (data: IMovieData) => {
+      if (!isFavorite) {
+        const newData = [...favorite, data]
+        setFavorite(newData)
+        local.setLocalStorage(newData)
+      } else {
+        const prev = [...favorite].filter((fav) => fav.imdbID !== data.imdbID)
+        setFavorite(prev)
+        local.setLocalStorage(prev)
+      }
+
+      setIsModalOpen(!isModalOpen)
+    },
+    [isFavorite, favorite, setFavorite, isModalOpen]
   )
 
   return (
     <>
       <Input handleChange={handleChange} inputValue={inputValue} />
       <ul className={styles.ul}>
-        {list.length > 0 && list.map((item: any) => <List onClick={handleClickList} key={item.imdbID} data={item} />)}
-        {list.length === 0 && <p className={styles.message}>검색결과가 없습니다 ‼️</p>}
-        {isModalOpen && <Modal data={clicked} setIsModalOpen={setIsModalOpen} />}
+        {renderList()}
+        <Modal
+          data={clicked}
+          handleClickCheck={handleClickCheck}
+          isModalOpen={isModalOpen}
+          isFavorite={isFavorite}
+          setIsModalOpen={setIsModalOpen}
+        />
       </ul>
     </>
   )

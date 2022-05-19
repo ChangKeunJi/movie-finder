@@ -44,7 +44,7 @@
 
 .button {
   padding: 10px 20px;
-  background-color: colors.$PRIMARY-LIGHT;
+  border:1px solid colors.$GRAY6;
   color: colors.$PRIMARY;
   border-radius: 5px;
   @include animation.clickEffect();
@@ -53,8 +53,13 @@
 .cancel {
   background-color: colors.$RED;
   color: colors.$WHITE;
+  border:none;
 }
 
-.buttonText {
+.buttonAdd {
   color:colors.$PRIMARY;
+}
+
+.buttonRemove {
+  color:colors.$RED;
 }

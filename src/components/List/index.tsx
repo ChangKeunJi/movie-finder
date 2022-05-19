@@ -3,15 +3,23 @@ import cx from 'classnames'
 import styles from './List.module.scss'
 import { IMovieData } from '../../types/index.d'
 import { StarFilled, Star } from '../../assets/icon/index'
+import { SetStateAction, useCallback } from 'react'
 
 interface Props {
   data: IMovieData
-  onClick: Function
+  handleClickList: (item: IMovieData, _isFavorite: SetStateAction<boolean>) => void
+  isFavorite: SetStateAction<boolean>
 }
 
-const List = ({ data, onClick }: Props) => {
+const List = ({ data, handleClickList, isFavorite }: Props) => {
+  const renderIcon = useCallback(() => {
+    if (isFavorite) return <StarFilled className={cx(styles.icon, { [styles.isActive]: isFavorite })} />
+
+    return <Star className={styles.icon} />
+  }, [isFavorite])
+
   return (
-    <div aria-hidden='true' onClick={() => onClick(data)} className={styles.container}>
+    <div aria-hidden='true' onClick={() => handleClickList(data, isFavorite)} className={styles.container}>
       <img className={styles.poster} src={data.Poster} alt='poster' />
       <section className={styles.info}>
         <span className={styles.dataWrapper}>
@@ -19,10 +27,7 @@ const List = ({ data, onClick }: Props) => {
           <p className={styles.year}>{data.Year}</p>
           <p className={styles.type}>{data.Type}</p>
         </span>
-        <span className={styles.favorite}>
-          {data.favorite && <StarFilled className={cx(styles.icon, { [styles.isActive]: data.favorite })} />}
-          {!data.favorite && <Star className={styles.icon} />}
-        </span>
+        <span className={styles.favorite}>{renderIcon()}</span>
       </section>
     </div>
   )
