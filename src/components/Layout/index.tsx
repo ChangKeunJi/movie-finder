@@ -1,16 +1,13 @@
-import { ReactNode } from 'react'
-
 import styles from './Layout.module.scss'
 import Tab from '../Tab/index'
+import { Outlet } from 'react-router-dom'
 
-interface Props {
-  children: ReactNode
-}
-
-const Layout = ({ children }: Props) => {
+const Layout = () => {
   return (
     <div className={styles.container}>
-      <main className={styles.content}>{children}</main>
+      <main className={styles.content}>
+        <Outlet />
+      </main>
       <footer className={styles.tab}>
         <Tab />
       </footer>

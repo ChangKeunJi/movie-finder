@@ -8,7 +8,6 @@ import { requestApi, favoriteData, pageData } from 'state'
 import { initial } from '../../constant/index'
 
 import Loading from 'components/Loading'
-import Layout from 'components/Layout'
 import Input from 'components/Input'
 import List from 'components/List'
 import Modal from 'components/Modal'
@@ -55,7 +54,7 @@ const SearchPage = () => {
   )
 
   return (
-    <Layout>
+    <>
       <Input setList={setList} />
       <ul className={styles.ul}>
         {list.length > 0 && list.map((item: any) => <List onClick={handleClickList} key={item.imdbID} data={item} />)}
@@ -65,7 +64,7 @@ const SearchPage = () => {
         </div>
         {isModalOpen && <Modal data={clicked} setIsModalOpen={setIsModalOpen} />}
       </ul>
-    </Layout>
+    </>
   )
 }
 

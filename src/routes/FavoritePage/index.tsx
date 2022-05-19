@@ -1,5 +1,4 @@
 import styles from './FavoritePage.module.scss'
-import Layout from 'components/Layout'
 import { useRecoilValue } from 'recoil'
 import { useCallback, useState } from 'react'
 
@@ -27,7 +26,7 @@ const FavoritePage = () => {
   )
 
   return (
-    <Layout>
+    <>
       <p className={styles.title}>즐겨찾기 목록</p>
       <section className={styles.container}>
         {recoilFavorite.length > 0 &&
@@ -35,7 +34,7 @@ const FavoritePage = () => {
         {recoilFavorite.length === 0 && <p className={styles.message}>즐겨찾기가 없습니다 ‼️</p>}
         {isModalOpen && <Modal data={clicked} setIsModalOpen={setIsModalOpen} />}
       </section>
-    </Layout>
+    </>
   )
 }
 

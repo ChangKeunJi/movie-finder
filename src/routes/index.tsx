@@ -8,6 +8,7 @@ import { local } from 'api/local'
 
 import SearchPage from './SearchPage'
 import FavoritePage from './FavoritePage'
+import Layout from 'components/Layout'
 
 const App = () => {
   const [, setRecoilFavorite] = useRecoilState(favoriteData)
@@ -23,9 +24,11 @@ const App = () => {
     <div className={styles.appWrapper}>
       <div className={styles.app}>
         <Routes>
-          <Route path='/' element={<SearchPage />} />
-          <Route path='/favorite' element={<FavoritePage />} />
-          <Route path='*' element={<div>404</div>} />
+          <Route path='/' element={<Layout />}>
+            <Route path='' element={<SearchPage />} />
+            <Route path='favorite' element={<FavoritePage />} />
+            <Route path='*' element={<div>404</div>} />
+          </Route>
         </Routes>
       </div>
     </div>
