@@ -59,9 +59,9 @@ const SearchPage = () => {
       <ul className={styles.ul}>
         {list.length > 0 && list.map((item: any) => <List onClick={handleClickList} key={item.imdbID} data={item} />)}
         {list.length === 0 && <p className={styles.message}>검색결과가 없습니다 ‼️</p>}
-        <div ref={setTarget} className={styles.target}>
+        {/* <div ref={setTarget} className={styles.target}>
           {isLoaded && <Loading />}
-        </div>
+        </div> */}
         {isModalOpen && <Modal data={clicked} setIsModalOpen={setIsModalOpen} />}
       </ul>
     </>
