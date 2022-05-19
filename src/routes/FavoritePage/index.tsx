@@ -14,12 +14,9 @@ const FavoritePage = () => {
   const [clicked, setClicked] = useState<IMovieData>(initial)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // 클릭하면 해당 Item을 Favorite에 추가
   const handleClickList = useCallback(
     (item: IMovieData): void => {
-      // 클릭된 Item 로컬 상태에 저장(Modal에 넘겨주기 위해)
       setClicked(item)
-      // 모달 Open
       setIsModalOpen(!isModalOpen)
     },
     [isModalOpen]

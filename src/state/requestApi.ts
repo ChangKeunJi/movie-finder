@@ -24,17 +24,14 @@ export const requestApi = selector<IResponseData>({
     const query = get(queryData)
     const page = get(pageData)
     try {
-      if (query.length > 0) {
-        const res = await instance.get(`${query}&page=${page}`)
-
-        return res.data
-      }
+      console.log('query', query)
+      if (query.length === 0) return []
+      const res = await instance.get(`${query}&page=${page}`)
+      return res.data
     } catch (error: unknown) {
       /* eslint no-useless-catch: "off" */
       throw error
     }
-
-    return ''
   },
 })
 
