@@ -36,7 +36,7 @@ const Modal = ({ clicked, setIsModalOpen, isModalOpen, isFavorite, handleClickCh
             <p>즐겨찾기를 &nbsp; {decideText()} &nbsp; 하시겠습니까?</p>
           </div>
           <div className={styles.buttonWrapper}>
-            <button onClick={() => handleClickCheck(clicked)} className={styles.button} type='button'>
+            <button onClick={() => handleClickCheck(clicked, isFavorite)} className={styles.button} type='button'>
               {decideText()}
             </button>
             <button onClick={handleClickCancel} className={`${styles.button} ${styles.cancel}`} type='button'>
