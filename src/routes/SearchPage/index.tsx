@@ -1,68 +1,93 @@
-import { useEffect, useState, useCallback } from 'react'
-import { useRecoilState, useRecoilValue, useRecoilValueLoadable } from 'recoil'
+import { useEffect, useState, useCallback, useMemo, ChangeEvent, ReactElement, SetStateAction } from 'react'
+import { useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil'
 import _ from 'lodash'
 
 import styles from './SearchPage.module.scss'
 import { IMovieData } from 'types'
-import { requestApi, favoriteData, pageData } from 'state'
-import { initial } from '../../constant/index'
+import { requestApi, favoriteData, queryData } from 'state'
 
 import Loading from 'components/Loading'
 import Input from 'components/Input'
 import List from 'components/List'
 import Modal from 'components/Modal'
 
-const SearchPage = () => {
-  const [list, setList] = useState<any>([])
-  const [clicked, setClicked] = useState<IMovieData>(initial)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+interface Props {
+  handleClickCheck: (data: IMovieData, _isFavorite: boolean) => void
+  handleClickList: (item: IMovieData, _isFavorite: SetStateAction<boolean>) => void
+  setIsModalOpen: React.Dispatch<SetStateAction<boolean>>
+  clicked: IMovieData
+  isModalOpen: boolean
+  isFavorite: boolean
+}
 
-  const [target, setTarget] = useState<HTMLElement | null>(null)
-  const [isLoaded, setIsLoaded] = useState(false)
+const SearchPage = ({ clicked, setIsModalOpen, isModalOpen, isFavorite, handleClickList, handleClickCheck }: Props) => {
+  const [list, setList] = useState<IMovieData[]>([])
+  const [inputValue, setInputValue] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const res = useRecoilValueLoadable(requestApi)
   const favoriteList = useRecoilValue(favoriteData)
-  const [page, setPage] = useRecoilState(pageData)
+  const setQuery = useSetRecoilState(queryData)
 
-  // 즐겨찾기 목록과 api response를 받아온 뒤 List에 favorite 속성을 추가
   useEffect(() => {
-    if (res.contents.Response !== 'True') return
+    if (res.contents.Response === 'False') {
+      setError(true)
+      return
+    }
+    if (res.contents.Response !== 'True') {
+      return
+    }
+    setList(res.contents.Search)
+    setIsLoading(false)
+  }, [res])
 
-    const copied = res.contents.Search.slice() // api response
-    const copiedFav = favoriteList.slice() // 즐겨찾기 목록
-
-    // response 중 즐겨찾기 목록과 동일한 Movie가 있다면 'favorite:true' 속성 추가
-    const newList = copied.map((movie: IMovieData) => {
-      const bool = copiedFav.find((fav) => fav.imdbID === movie.imdbID)
-      return {
-        ...movie,
-        favorite: bool,
-      }
-    })
-    setList(newList)
-  }, [res, favoriteList, page])
-
-  // 클릭하면 해당 Item을 Modal 컴포넌트에 전달해주고 Modal을 렌더링
-  const handleClickList = useCallback(
-    (item: IMovieData): void => {
-      // 클릭된 Item 상태에 업데이트
-      setClicked(item)
-      // 모달 open
-      setIsModalOpen(!isModalOpen)
-    },
-    [isModalOpen]
+  const debounceCall = useMemo(
+    () =>
+      _.debounce((q) => {
+        setQuery(q)
+      }, 500),
+    [setQuery]
   )
+
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>): void => {
+      const { value } = e.currentTarget
+      setInputValue(value)
+      setIsLoading(true)
+      setError(false)
+      debounceCall(value)
+
+      if (value.length === 0) {
+        setList([])
+        setIsLoading(false)
+      }
+    },
+    [debounceCall]
+  )
+
+  const renderList = useCallback((): JSX.Element | ReactElement[] | null => {
+    if (error) return <p className={styles.message}>결과가 너무 많거나 잘못된 입력어 입니다. </p>
+    if (isLoading) return <Loading />
+    if (list.length === 0) return <p className={styles.message}>결과가 없습니다.!!</p>
+    return list.map((item: any) => {
+      const isFavoriteBool = favoriteList.filter((el) => el.imdbID === item.imdbID).length
+      return <List isFavorite={!!isFavoriteBool} handleClickList={handleClickList} key={item.imdbID} data={item} />
+    })
+  }, [list, handleClickList, favoriteList, isLoading, error])
 
   return (
     <>
-      <Input setList={setList} />
+      <Input handleChange={handleChange} inputValue={inputValue} />
       <ul className={styles.ul}>
-        {list.length > 0 && list.map((item: any) => <List onClick={handleClickList} key={item.imdbID} data={item} />)}
-        {list.length === 0 && <p className={styles.message}>검색결과가 없습니다 ‼️</p>}
-        {/* <div ref={setTarget} className={styles.target}>
-          {isLoaded && <Loading />}
-        </div> */}
-        {isModalOpen && <Modal data={clicked} setIsModalOpen={setIsModalOpen} />}
+        {renderList()}
+        <Modal
+          clicked={clicked}
+          handleClickCheck={handleClickCheck}
+          isModalOpen={isModalOpen}
+          isFavorite={isFavorite}
+          setIsModalOpen={setIsModalOpen}
+        />
       </ul>
     </>
   )
