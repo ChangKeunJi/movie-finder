@@ -9,9 +9,10 @@ interface Props {
   data: IMovieData
   handleClickList: (item: IMovieData, _isFavorite: SetStateAction<boolean>) => void
   isFavorite: SetStateAction<boolean>
+  lastElementRef?: (node: any) => void
 }
 
-const List = ({ data, handleClickList, isFavorite }: Props) => {
+const List = ({ data, handleClickList, lastElementRef, isFavorite }: Props) => {
   const renderIcon = useCallback(() => {
     if (isFavorite) return <StarFilled className={cx(styles.icon, { [styles.isActive]: isFavorite })} />
 
@@ -19,7 +20,12 @@ const List = ({ data, handleClickList, isFavorite }: Props) => {
   }, [isFavorite])
 
   return (
-    <li aria-hidden='true' onClick={() => handleClickList(data, isFavorite)} className={styles.container}>
+    <li
+      ref={lastElementRef}
+      aria-hidden='true'
+      onClick={() => handleClickList(data, isFavorite)}
+      className={styles.container}
+    >
       <img className={styles.poster} src={data.Poster} alt='poster' />
       <section className={styles.info}>
         <span className={styles.dataWrapper}>
