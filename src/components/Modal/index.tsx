@@ -5,14 +5,14 @@ import styles from './Modal.module.scss'
 import { IMovieData } from 'types'
 
 interface Props {
-  data: IMovieData
+  clicked: IMovieData
   setIsModalOpen: Dispatch<SetStateAction<boolean>>
   isModalOpen: boolean
   handleClickCheck: Function
   isFavorite: Boolean
 }
 
-const Modal = ({ data, setIsModalOpen, isModalOpen, isFavorite, handleClickCheck }: Props) => {
+const Modal = ({ clicked, setIsModalOpen, isModalOpen, isFavorite, handleClickCheck }: Props) => {
   const modalRef = useRef<HTMLElement>(null)
 
   useOutsideClick(modalRef, () => setIsModalOpen((prev: boolean) => !prev))
@@ -36,7 +36,7 @@ const Modal = ({ data, setIsModalOpen, isModalOpen, isFavorite, handleClickCheck
             <p>즐겨찾기를 &nbsp; {decideText()} &nbsp; 하시겠습니까?</p>
           </div>
           <div className={styles.buttonWrapper}>
-            <button onClick={() => handleClickCheck(data)} className={styles.button} type='button'>
+            <button onClick={() => handleClickCheck(clicked)} className={styles.button} type='button'>
               {decideText()}
             </button>
             <button onClick={handleClickCancel} className={`${styles.button} ${styles.cancel}`} type='button'>

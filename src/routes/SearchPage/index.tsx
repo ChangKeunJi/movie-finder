@@ -8,6 +8,7 @@ import { requestApi, favoriteData, queryData } from 'state'
 import { initial } from '../../constant/index'
 import { local } from 'api/local'
 
+import Loading from 'components/Loading'
 import Input from 'components/Input'
 import List from 'components/List'
 import Modal from 'components/Modal'
@@ -18,6 +19,8 @@ const SearchPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [inputValue, setInputValue] = useState('')
   const [isFavorite, setIsFavorite] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const res = useRecoilValueLoadable(requestApi)
   const favoriteList = useRecoilValue(favoriteData)
@@ -25,20 +28,37 @@ const SearchPage = () => {
   const [favorite, setFavorite] = useRecoilState(favoriteData)
 
   useEffect(() => {
-    if (res.contents.Response !== 'True') return
+    if (res.contents.Response === 'False') {
+      setError(true)
+      return
+    }
+    if (res.contents.Response !== 'True') {
+      return
+    }
     setList(res.contents.Search)
+    setIsLoading(false)
   }, [res])
 
-  const debounceCall = useMemo(() => _.debounce((q) => setQuery(q), 500), [setQuery])
+  const debounceCall = useMemo(
+    () =>
+      _.debounce((q) => {
+        setQuery(q)
+      }, 500),
+    [setQuery]
+  )
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>): void => {
       const { value } = e.currentTarget
       setInputValue(value)
-
-      if (!value.length) setList([])
-
+      setIsLoading(true)
+      setError(false)
       debounceCall(value)
+
+      if (value.length === 0) {
+        setList([])
+        setIsLoading(false)
+      }
     },
     [debounceCall]
   )
@@ -52,13 +72,15 @@ const SearchPage = () => {
     [isModalOpen]
   )
 
-  const renderList = useCallback((): JSX.Element | ReactElement[] => {
-    if (list.length === 0) return <p className={styles.message}>검색결과가 없습니다 ‼️</p>
+  const renderList = useCallback((): JSX.Element | ReactElement[] | null => {
+    if (error) return <p className={styles.message}>결과가 너무 많거나 잘못된 입력어 입니다. </p>
+    if (isLoading) return <Loading />
+    if (list.length === 0) return <p className={styles.message}>결과가 없습니다.!!</p>
     return list.map((item: any) => {
       const isFavoriteBool = favoriteList.filter((el) => el.imdbID === item.imdbID).length
       return <List isFavorite={!!isFavoriteBool} handleClickList={handleClickList} key={item.imdbID} data={item} />
     })
-  }, [list, handleClickList, favoriteList])
+  }, [list, handleClickList, favoriteList, isLoading, error])
 
   const handleClickCheck = useCallback(
     (data: IMovieData) => {
@@ -83,7 +105,7 @@ const SearchPage = () => {
       <ul className={styles.ul}>
         {renderList()}
         <Modal
-          data={clicked}
+          clicked={clicked}
           handleClickCheck={handleClickCheck}
           isModalOpen={isModalOpen}
           isFavorite={isFavorite}

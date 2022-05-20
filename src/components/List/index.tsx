@@ -19,7 +19,7 @@ const List = ({ data, handleClickList, isFavorite }: Props) => {
   }, [isFavorite])
 
   return (
-    <div aria-hidden='true' onClick={() => handleClickList(data, isFavorite)} className={styles.container}>
+    <li aria-hidden='true' onClick={() => handleClickList(data, isFavorite)} className={styles.container}>
       <img className={styles.poster} src={data.Poster} alt='poster' />
       <section className={styles.info}>
         <span className={styles.dataWrapper}>
@@ -29,7 +29,7 @@ const List = ({ data, handleClickList, isFavorite }: Props) => {
         </span>
         <span className={styles.favorite}>{renderIcon()}</span>
       </section>
-    </div>
+    </li>
   )
 }
 

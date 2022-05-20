@@ -27,9 +27,9 @@ export const requestApi = selector<IResponseData>({
       if (query.length === 0) return []
       const res = await instance.get(`${query}&page=${page}`)
       return res.data
-    } catch (error: unknown) {
+    } catch (error: any) {
       /* eslint no-useless-catch: "off" */
-      throw error
+      throw new Error(error.message)
     }
   },
 })

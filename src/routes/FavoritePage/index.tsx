@@ -44,7 +44,7 @@ const FavoritePage = () => {
         <Modal
           isFavorite
           handleClickCheck={handleClickCheck}
-          data={clicked}
+          clicked={clicked}
           setIsModalOpen={setIsModalOpen}
           isModalOpen={isModalOpen}
         />
