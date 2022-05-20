@@ -6,7 +6,8 @@ export default function useReqestMovie(query: string, page: number = 1) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [list, setList] = useState<IMovieData[]>([])
-  // const [hasMore, setHasMore] = useState(false)
+  const [count, setCount] = useState(0)
+  const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {
     setList([])
@@ -20,9 +21,14 @@ export default function useReqestMovie(query: string, page: number = 1) {
         setList((prev) => {
           return [...prev, ...res.data.Search]
         })
+        setCount((prevCount) => {
+          setHasMore(prevCount + res.data.Search.length < res.data.totalResults)
+          return prevCount + res.data.Search.length
+        })
       }
+
       setLoading(false)
     })
   }, [query, page])
-  return { loading, error, list, setLoading, setList }
+  return { loading, error, list, setLoading, setList, hasMore }
 }

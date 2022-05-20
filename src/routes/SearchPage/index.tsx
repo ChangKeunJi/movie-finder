@@ -26,9 +26,8 @@ const SearchPage = ({ clicked, setIsModalOpen, isModalOpen, isFavorite, handleCl
   const [page, setPage] = useState(1)
   const [debouncedInput, setDebouncedInput] = useState(inputValue)
   const favoriteList = useRecoilValue(favoriteData)
-  const hasMore = true
 
-  const { loading, error, list, setLoading, setList } = useReqestMovie(debouncedInput, page)
+  const { loading, error, list, setLoading, setList, hasMore } = useReqestMovie(debouncedInput, page)
 
   const observer: any = useRef()
   const lastElementRef = useCallback(
@@ -89,12 +88,18 @@ const SearchPage = ({ clicked, setIsModalOpen, isModalOpen, isFavorite, handleCl
       return <List isFavorite={!!isFavoriteBool} handleClickList={handleClickList} key={item.imdbID} data={item} />
     })
   }, [list, handleClickList, favoriteList, error, loading, lastElementRef])
+
+  const renderLoading = useCallback(() => {
+    if (!hasMore) return <p className={styles.message}>마지막 자료입니다.</p>
+    if (loading) return <Loading />
+    return null
+  }, [loading, hasMore])
   return (
     <>
       <Input handleChange={handleChange} inputValue={inputValue} />
       <ul className={styles.ul}>
         {renderList()}
-        {loading && <Loading />}
+        {renderLoading()}
         <Modal
           clicked={clicked}
           handleClickCheck={handleClickCheck}
