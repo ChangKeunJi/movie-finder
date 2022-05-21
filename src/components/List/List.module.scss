@@ -37,8 +37,15 @@
   @include flexbox.flexbox(between, center);
 
   .title {
+    display: inline-block;
     font-size: 20px;
+    width: 195px;
+    height: 40px;
+    padding-top: 20px;
     margin-bottom: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;  
   }
 }
 

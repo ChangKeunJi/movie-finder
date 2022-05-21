@@ -50,9 +50,14 @@ const SearchPage = ({ clicked, setIsModalOpen, isModalOpen, isFavorite, handleCl
   const debounceCall = useMemo(
     () =>
       _.debounce((q) => {
+        if (q.length === 0) {
+          setList([])
+          setLoading(false)
+          return
+        }
         setDebouncedInput(q)
       }, 500),
-    [setDebouncedInput]
+    [setDebouncedInput, setList, setLoading]
   )
 
   const handleChange = useCallback(
@@ -60,13 +65,9 @@ const SearchPage = ({ clicked, setIsModalOpen, isModalOpen, isFavorite, handleCl
       setLoading(true)
       const { value } = e.currentTarget
       setInputValue(value)
-      if (value.length === 0) {
-        setList([])
-        return
-      }
       debounceCall(value)
     },
-    [debounceCall, setLoading, setList]
+    [debounceCall, setLoading]
   )
 
   const renderList = useCallback((): JSX.Element | ReactElement[] | null => {

@@ -6,7 +6,7 @@ export default function useReqestMovie(query: string, page: number = 1) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [list, setList] = useState<IMovieData[]>([])
-  const [count, setCount] = useState(0)
+  const [, setCount] = useState(0)
   const [hasMore, setHasMore] = useState(true)
 
   useEffect(() => {

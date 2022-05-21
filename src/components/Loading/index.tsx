@@ -5,7 +5,7 @@ import styles from './Loading.module.scss'
 const Loading = () => {
   return (
     <div className={styles.container}>
-      <Spinner type='spin' color='#A593E0' />
+      <Spinner type='spin' color='#0064ff' />
     </div>
   )
 }
