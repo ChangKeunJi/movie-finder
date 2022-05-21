@@ -30,8 +30,10 @@ const List = ({ data, handleClickList, lastElementRef, isFavorite }: Props) => {
       <section className={styles.info}>
         <span className={styles.dataWrapper}>
           <p className={styles.title}>{data.Title}</p>
-          <p className={styles.year}>{data.Year}</p>
-          <p className={styles.type}>{data.Type}</p>
+          <p className={styles.year}>
+            {data.Year} / {data.Type}
+          </p>
+          {/* <p className={styles.type}>{data.Type}</p> */}
         </span>
         <span className={styles.favorite}>{renderIcon()}</span>
       </section>
